@@ -42,6 +42,27 @@ lspconfig.gopls.setup({
   },
 })
 
+
+-- Add clangd for C/C++
+lspconfig.clangd.setup({
+  on_attach = lsp_zero.on_attach, -- Use the same on_attach function as other LSPs
+  capabilities = lsp_zero.capabilities, -- Use the same capabilities as other LSPs
+  cmd = { "clangd" }, -- Ensure clangd is in your PATH
+  filetypes = { "c", "cpp" }, -- File types to associate with clangd
+  settings = {
+  },
+})
+
+-- Add rust-analyzer for Rust
+lspconfig.rust_analyzer.setup({
+  on_attach = lsp_zero.on_attach,
+  capabilities = lsp_zero.capabilities,
+  settings = {
+    ["rust-analyzer"] = {
+    },
+  },
+})
+
 require'lspconfig'.tsserver.setup({
   init_options = {
     plugins = {
@@ -53,9 +74,11 @@ require'lspconfig'.tsserver.setup({
     },
   },
   filetypes = {
-    "javascript",
+   "javascript",
     "typescript",
-    "vue",
+    "javascriptreact",
+    "typescriptreact", 
+    "vue", 
   },
 })
 
