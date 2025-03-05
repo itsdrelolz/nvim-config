@@ -2,45 +2,71 @@ local lspconfig = require('lspconfig')
 local lsp_zero = require('lsp-zero')
 local cmp = require('cmp')
 
+-- Diagnostic configuration
+vim.diagnostic.config({
+    virtual_text = true,  -- Show error messages inline
+    signs = true,         -- Show signs in the gutter
+    underline = true,     -- Underline errors
+    update_in_insert = false,
+    severity_sort = true,
+})
+
+-- Existing configurations remain the same
 cmp.setup({
     mapping = {
-        -- ... other mappings ...
         ['<C-Enter>'] = cmp.mapping.confirm({ select = true }), 
     }
 })
+
 lsp_zero.on_attach(function(client, bufnr)
-  -- see :help lsp-zero-keybindings
-  -- to learn the available actions
-  lsp_zero.default_keymaps({buffer = bufnr})
+    lsp_zero.default_keymaps({buffer = bufnr})
+    
+    -- Add additional diagnostic keymaps
+    vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, {buffer = bufnr, desc = "Show line diagnostics"})
+    vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, {buffer = bufnr, desc = "Previous diagnostic"})
+    vim.keymap.set('n', ']d', vim.diagnostic.goto_next, {buffer = bufnr, desc = "Next diagnostic"})
 end)
 
--- Add Pyright configuration
-lspconfig.pyright.setup({
-  -- Pyright specific configurations here
-  -- For example:
-  settings = {
-    python = {
-      analysis = {
-        autoSearchPaths = true,
-        useLibraryCodeForTypes = true,
-      },
+-- Customize gopls configuration to include more detailed diagnostics
+lspconfig.gopls.setup({
+    settings = {
+        gopls = {
+            analyses = {
+                unusedparams = true,
+                shadow = true,
+            },
+            staticcheck = true,
+            diagnosticsDelay = "500ms",
+            completeUnimported = true,
+            usePlaceholders = true,
+        }
     },
-  },
+    on_attach = function(client, bufnr)
+        lsp_zero.on_attach(client, bufnr)
+        
+        -- Additional gopls-specific diagnostic configuration
+        vim.api.nvim_create_autocmd("CursorHold", {
+            buffer = bufnr,
+            callback = function()
+                vim.diagnostic.open_float(nil, {
+                    focusable = false,
+                    close_events = {
+                        "CursorMoved",
+                        "CursorMovedI",
+                        "BufHidden",
+                        "InsertCharPre",
+                        "WinLeave",
+                    },
+                    source = "always",
+                    scope = "cursor",
+                    max_width = 80,
+                })
+            end
+        })
+    end
 })
 
--- Add gopls configuration
-lspconfig.gopls.setup({
-  -- gopls specific configurations here
-  -- For example:
-  settings = {
-    gopls = {
-      analyses = {
-        unusedparams = true,
-      },
-      staticcheck = true,
-    },
-  },
-})
+-- Existing language server configurations...
 
 
 -- Add clangd for C/C++
