@@ -89,7 +89,8 @@ lspconfig.rust_analyzer.setup({
   },
 })
 
-require'lspconfig'.tsserver.setup({
+-- Replace the deprecated tsserver with ts_ls for TypeScript support
+require'lspconfig'.ts_ls.setup({
   init_options = {
     plugins = {
       {
@@ -100,7 +101,7 @@ require'lspconfig'.tsserver.setup({
     },
   },
   filetypes = {
-   "javascript",
+    "javascript",
     "typescript",
     "javascriptreact",
     "typescriptreact", 
