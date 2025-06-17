@@ -105,7 +105,8 @@ require'lspconfig'.ts_ls.setup({
     "typescript",
     "javascriptreact",
     "typescriptreact", 
-    "vue", 
+    "vue",
+    "gopls",
   },
 })
 
