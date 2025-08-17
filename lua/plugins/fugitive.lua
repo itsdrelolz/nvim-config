@@ -1,1 +1,6 @@
-vim.keymap.set("n", "<leader>gs", vim.cmd.Git);
+return {
+  'tpope/vim-fugitive',
+  keys = {
+    { '<leader>gs', '<cmd>Git<CR>', desc = 'Git status' },
+  },
+}

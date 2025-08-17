@@ -1,2 +1,6 @@
-vim.keymap.set("n", "<leader>f", vim.cmd.UndotreeToggle)
-
+return {
+  'mbbill/undotree',
+  keys = {
+    { '<leader>f', '<cmd>UndotreeToggle<CR>', desc = 'Toggle Undotree' },
+  },
+}
