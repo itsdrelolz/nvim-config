@@ -12,7 +12,7 @@ return {
       require("mason-lspconfig").setup({
         ensure_installed = {
           "lua_ls",
-          "tsserver", -- Correct TypeScript server
+          "tsserver",
           "gopls",
           "pyright",
           "html",
@@ -69,6 +69,8 @@ return {
           ["<C-k>"] = cmp.mapping.select_prev_item(),
           ["<C-j>"] = cmp.mapping.select_next_item(),
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
+          -- Keymap from remap.lua is now here
+          ['<C-Enter>'] = cmp.mapping.confirm({ select = true }),
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },

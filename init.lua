@@ -1,7 +1,7 @@
 -- [[ SETTINGS ]]
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
-require("dre.set") -- Keep your custom settings
+require("dre.set") -- Keep your custom settings in lua/dre/set.lua
 
 -- [[ LAZY.NVIM BOOTSTRAP ]]
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -23,4 +23,3 @@ require("lazy").setup("plugins")
 
 -- [[ KEYMAPS ]]
 require("dre.remap") -- Keep your custom keymaps
-require("dre.telescope") -- Keep your telescope config
