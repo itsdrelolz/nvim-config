@@ -8,23 +8,9 @@ return {
   },
   {
     "williamboman/mason-lspconfig.nvim",
-    config = function()
-      require("mason-lspconfig").setup({
-        ensure_installed = {
-          "lua_ls",
-          "ts_ls",
-          "gopls",
-          "pyright",
-          "html",
-          "cssls",
-        },
-      })
-    end,
-  },
-
-  -- The core LSP configuration client
-  {
-    "neovim/nvim-lspconfig",
+    dependencies = {
+      "neovim/nvim-lspconfig",
+    },
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local on_attach = function(client, bufnr)
@@ -37,14 +23,25 @@ return {
         map("<leader>rn", vim.lsp.buf.rename, "Rename")
       end
 
-      require("mason-lspconfig").setup_handlers({
-        function(server_name) -- Default handler
-          require("lspconfig")[server_name].setup({
-            on_attach = on_attach,
-            capabilities = capabilities,
-          })
-        end,
+      local servers = {
+        "lua_ls",
+        "ts_ls",
+        "gopls",
+        "pyright",
+        "html",
+        "cssls",
+      }
+
+      require("mason-lspconfig").setup({
+        ensure_installed = servers,
       })
+
+      for _, server_name in ipairs(servers) do
+        require("lspconfig")[server_name].setup({
+          on_attach = on_attach,
+          capabilities = capabilities,
+        })
+      end
     end,
   },
 
