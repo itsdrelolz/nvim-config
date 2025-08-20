@@ -5,19 +5,21 @@ return {
       "L3MON4D3/LuaSnip",
       "rafamadriz/friendly-snippets",
     },
+    build = "cargo build --release",
     event = "InsertEnter",
     config = function()
-      require("blink").setup({
+      require("blink.cmp").setup({
+        fuzzy = {
+          implementation = "lua", -- Use Lua implementation to avoid Rust requirement
+        },
         snippets = {
-          expand = function(snippet, _)
-            require("luasnip").lsp_expand(snippet.body)
-          end,
+          preset = "luasnip",
         },
         sources = {
-          default = { "lsp", "luasnip" },
+          default = { "lsp", "snippets" },
         },
         keymap = {
-          preset = "insert",
+          preset = "default",
           ["<C-k>"] = { "select_prev" },
           ["<C-j>"] = { "select_next" },
           ["<CR>"] = { "accept" },

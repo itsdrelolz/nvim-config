@@ -10,11 +10,10 @@ return {
     "williamboman/mason-lspconfig.nvim",
     dependencies = {
       "neovim/nvim-lspconfig",
-      "hrsh7th/cmp-nvim-lsp", -- This is needed for capabilities
     },
     config = function()
-      -- Get the capabilities from cmp-nvim-lsp
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      -- Get capabilities from blink.cmp instead of cmp-nvim-lsp
+      local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       local on_attach = function(client, bufnr)
         local map = function(keys, func, desc)
@@ -40,11 +39,11 @@ return {
         ensure_installed = servers,
       })
 
-      -- Pass capabilities to each server
+      -- Pass blink.cmp capabilities to each server
       for _, server_name in ipairs(servers) do
         require("lspconfig")[server_name].setup({
           on_attach = on_attach,
-          capabilities = capabilities, -- This is the crucial line
+          capabilities = capabilities,
         })
       end
     end,
