@@ -10,9 +10,12 @@ return {
     "williamboman/mason-lspconfig.nvim",
     dependencies = {
       "neovim/nvim-lspconfig",
+      "hrsh7th/cmp-nvim-lsp", -- This is needed for capabilities
     },
     config = function()
+      -- Get the capabilities from cmp-nvim-lsp
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
       local on_attach = function(client, bufnr)
         local map = function(keys, func, desc)
           vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
@@ -30,50 +33,20 @@ return {
         "pyright",
         "html",
         "cssls",
+        "csharp_ls",
       }
 
       require("mason-lspconfig").setup({
         ensure_installed = servers,
       })
 
+      -- Pass capabilities to each server
       for _, server_name in ipairs(servers) do
         require("lspconfig")[server_name].setup({
           on_attach = on_attach,
-          capabilities = capabilities,
+          capabilities = capabilities, -- This is the crucial line
         })
       end
-    end,
-  },
-
-  -- Autocompletion Engine
-  {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "L3MON4D3/LuaSnip",
-      "saadparwaiz1/cmp_luasnip",
-    },
-    event = "InsertEnter",
-    config = function()
-      local cmp = require("cmp")
-      cmp.setup({
-        snippet = {
-          expand = function(args)
-            require("luasnip").lsp_expand(args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert({
-          ["<C-k>"] = cmp.mapping.select_prev_item(),
-          ["<C-j>"] = cmp.mapping.select_next_item(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
-          -- Keymap from remap.lua is now here
-          ['<C-Enter>'] = cmp.mapping.confirm({ select = true }),
-        }),
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-        }),
-      })
     end,
   },
 }
