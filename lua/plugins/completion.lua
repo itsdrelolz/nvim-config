@@ -20,12 +20,12 @@ return {
         },
         keymap = {
           preset = "default",
-          ["<C-k>"] = { "select_prev" },
-          ["<C-j>"] = { "select_next" },
-          ["<CR>"] = { "accept" },
-          ['<C-Enter>'] = { "accept" },
+          ["<C-p>"] = { "select_prev" }, -- Select previous item
+          ["<C-n>"] = { "select_next" }, -- Select next item
+          ["<C-y>"] = { "accept" },      -- Accept the selected suggestion
         },
       })
     end,
   },
 }
+

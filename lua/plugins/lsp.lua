@@ -32,7 +32,8 @@ return {
         "pyright",
         "html",
         "cssls",
-        "csharp_ls",
+        "omnisharp",
+	"jdtls",
       }
 
       require("mason-lspconfig").setup({
