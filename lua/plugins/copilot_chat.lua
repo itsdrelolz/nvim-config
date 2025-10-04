@@ -4,14 +4,12 @@ return {
     branch = "main",
     cmd = "CopilotChat",
 
-    -- *** CRITICAL: ADD THESE MISSING DEPENDENCIES/BUILD STEP ***
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim", -- Highly recommended for prompt/model selection UI
       "zbirenbaum/copilot.lua",        -- Core Copilot plugin
     },
     build = "make tiktoken", -- Required for token counting on Linux/macOS
-    -- **********************************************************
 
     opts = function()
       local user = vim.env.USER or "User"
@@ -71,8 +69,6 @@ return {
       },
     },
 
-    -- FIX: This minimal config block ONLY contains the autocmd.
-    -- lazy.nvim will automatically call require("CopilotChat").setup(opts) for you.
     config = function()
       vim.api.nvim_create_autocmd("BufEnter", {
         pattern = "copilot-chat",
@@ -81,7 +77,6 @@ return {
           vim.opt_local.number = false
         end,
       })
-      -- The manual lines 'local chat = require("CopilotChat")' and 'chat.setup(opts)' MUST be removed.
     end,
   },
 }

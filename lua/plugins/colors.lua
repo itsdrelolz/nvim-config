@@ -1,18 +1,24 @@
 return {
-  "folke/tokyonight.nvim",
+  -- 1. Change the repository name
+  "EdenEast/nightfox.nvim",
 
+  priority = 1000, 
+  
   opts = {
-    style = "night",
-    transparent = true,
-    styles = {
-      sidebars = "transparent",
-      floats = "transparent",
+    options = {
+      transparent = true, 
+      
+      styles = {
+        sidebars = "transparent",
+        floats = "transparent",
+      },
     },
   },
 
-  priority = 1000,
   config = function(_, opts)
-    require("tokyonight").setup(opts)
-    vim.cmd.colorscheme "tokyonight"
+    -- 2. Call the new setup function
+    require("nightfox").setup(opts)
+    
+    vim.cmd.colorscheme "nightfox" 
   end,
 }
