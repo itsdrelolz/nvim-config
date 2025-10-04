@@ -1,13 +1,18 @@
 return {
-  {
-    "neanias/everforest-nvim",
-    priority = 1000, -- Make sure it loads first
-    config = function()
-      require("everforest").setup({
-        -- You can configure the theme here if you wish
-        transparent_background = true,
-      })
-      vim.cmd.colorscheme "everforest"
-    end,
+  "folke/tokyonight.nvim",
+
+  opts = {
+    style = "night",
+    transparent = true,
+    styles = {
+      sidebars = "transparent",
+      floats = "transparent",
+    },
   },
+
+  priority = 1000,
+  config = function(_, opts)
+    require("tokyonight").setup(opts)
+    vim.cmd.colorscheme "tokyonight"
+  end,
 }
