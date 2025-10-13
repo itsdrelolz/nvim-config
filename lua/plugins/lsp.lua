@@ -37,8 +37,6 @@ return {
         "pyright",
         "html",
         "cssls",
-        "omnisharp",
-        "vue_ls", -- Vue language server (lspconfig name)
       }
       
       require("mason-lspconfig").setup({
