@@ -1,11 +1,13 @@
 return {
-  -- LSP Configuration & Mason
+  -- Mason: installs language servers
   {
     "williamboman/mason.nvim",
     config = function()
       require("mason").setup()
     end,
   },
+
+  -- Mason-LSPConfig: bridges Mason and nvim-lspconfig
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = {
@@ -13,23 +15,21 @@ return {
       "williamboman/mason.nvim",
     },
     config = function()
-      -- Get capabilities from blink.cmp
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
-      
-      local on_attach = function(client, bufnr)
+      local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+      local on_attach = function(_, bufnr)
         local map = function(keys, func, desc)
           vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
         end
+
+        -- Buffer-local LSP mappings (triggered after LSP attaches)
         map("gd", vim.lsp.buf.definition, "Go to Definition")
         map("K", vim.lsp.buf.hover, "Hover Documentation")
         map("<leader>ca", vim.lsp.buf.code_action, "Code Action")
         map("<leader>rn", vim.lsp.buf.rename, "Rename")
         map("gr", vim.lsp.buf.references, "Go to References")
-        map("<leader>d", vim.diagnostic.open_float, "Show Diagnostics")
-        map("[d", vim.diagnostic.goto_prev, "Previous Diagnostic")
-        map("]d", vim.diagnostic.goto_next, "Next Diagnostic")
       end
-      
+
       local servers = {
         "lua_ls",
         "ts_ls",
@@ -38,44 +38,38 @@ return {
         "html",
         "cssls",
       }
-      
+
       require("mason-lspconfig").setup({
         ensure_installed = servers,
         handlers = {
-          -- Default handler for all LSPs not explicitly configured
+          -- Default handler for all LSPs
           function(server_name)
             require("lspconfig")[server_name].setup({
               on_attach = on_attach,
               capabilities = capabilities,
             })
           end,
-          
-          -- Lua LSP configuration
+
+          -- Lua
           ["lua_ls"] = function()
             require("lspconfig").lua_ls.setup({
               on_attach = on_attach,
               capabilities = capabilities,
               settings = {
                 Lua = {
-                  runtime = {
-                    version = 'LuaJIT'
-                  },
-                  diagnostics = {
-                    globals = {'vim'}
-                  },
+                  runtime = { version = "LuaJIT" },
+                  diagnostics = { globals = { "vim" } },
                   workspace = {
                     library = vim.api.nvim_get_runtime_file("", true),
                     checkThirdParty = false,
                   },
-                  telemetry = {
-                    enable = false,
-                  },
+                  telemetry = { enable = false },
                 },
               },
             })
           end,
-          
-          -- TypeScript/JavaScript LSP configuration
+
+          -- TypeScript/JavaScript
           ["ts_ls"] = function()
             require("lspconfig").ts_ls.setup({
               on_attach = on_attach,
@@ -83,17 +77,8 @@ return {
               filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
             })
           end,
-          
-          -- Vue LSP configuration
-          ["vue_ls"] = function()
-            require("lspconfig").vue_ls.setup({
-              on_attach = on_attach,
-              capabilities = capabilities,
-              filetypes = { "vue" },
-            })
-          end,
-          
-          -- Python LSP configuration
+
+          -- Python
           ["pyright"] = function()
             require("lspconfig").pyright.setup({
               on_attach = on_attach,
@@ -108,17 +93,15 @@ return {
               },
             })
           end,
-          
-          -- Go LSP configuration
+
+          -- Go
           ["gopls"] = function()
             require("lspconfig").gopls.setup({
               on_attach = on_attach,
               capabilities = capabilities,
               settings = {
                 gopls = {
-                  analyses = {
-                    unusedparams = true,
-                  },
+                  analyses = { unusedparams = true },
                   staticcheck = true,
                   gofumpt = true,
                 },
@@ -130,3 +113,4 @@ return {
     end,
   },
 }
+
