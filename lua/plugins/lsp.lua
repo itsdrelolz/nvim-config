@@ -25,8 +25,6 @@ return {
         -- Buffer-local LSP mappings (triggered after LSP attaches)
         map("gd", vim.lsp.buf.definition, "Go to Definition")
         map("K", vim.lsp.buf.hover, "Hover Documentation")
-        map("<leader>ca", vim.lsp.buf.code_action, "Code Action")
-        map("<leader>rn", vim.lsp.buf.rename, "Rename")
         map("gr", vim.lsp.buf.references, "Go to References")
       end
 

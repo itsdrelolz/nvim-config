@@ -1,11 +1,10 @@
 -- [[ SETTINGS ]]
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
-require("dre.set") -- Keep your custom settings in lua/dre/set.lua
-
+require("dre.set")
 
 -- [[ KEYMAPS ]]
-require("dre.remap") -- Keep your custom keymaps
+require("dre.remap") 
 -- [[ LAZY.NVIM BOOTSTRAP ]]
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -22,6 +21,6 @@ vim.opt.rtp:prepend(lazypath)
 
 
 -- [[ PLUGINS ]]
--- This tells lazy to load all files in lua/plugins/
+--  lazy load all files in lua/plugins/
 require("lazy").setup("plugins")
 
