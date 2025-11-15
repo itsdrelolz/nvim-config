@@ -1,10 +1,8 @@
 return {
   -- Mason: installs language servers
   {
-    "williamboman/mason.nvim",
-    config = function()
-      require("mason").setup()
-    end,
+"mason-org/mason.nvim",
+    opts = {}
   },
 
   -- Mason-LSPConfig: bridges Mason and nvim-lspconfig
