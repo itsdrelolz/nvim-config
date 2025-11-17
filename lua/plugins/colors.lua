@@ -1,5 +1,5 @@
 return {
-  "thesimonho/kanagawa-paper.nvim",
+  "sainnhe/gruvbox-material",
 
   priority = 1000, 
   opts = {
@@ -11,8 +11,8 @@ return {
       },
     },
   },
-  config = function(_, opts)
-    require("kanagawa-paper").setup(opts)
-    vim.cmd.colorscheme "kanagawa-paper" 
+  config = function()
+    vim.g.gruvbox_material_enable_italic = true
+    vim.cmd.colorscheme "gruvbox-material" 
   end,
 }
