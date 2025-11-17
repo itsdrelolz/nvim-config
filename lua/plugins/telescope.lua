@@ -1,37 +1,38 @@
 return {
   {
-    "nvim-telescope/telescope.nvim",
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.8',
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
-      },
-      "nvim-tree/nvim-web-devicons",
+      'nvim-lua/plenary.nvim',
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
     },
-
-    keys = {
-      { "<leader>pf", function() require("telescope.builtin").find_files() end, desc = "Find project files" },
-      { "<C-p>", function() require("telescope.builtin").git_files() end, desc = "Find git files" },
-      { "<leader>ps", function() require("telescope.builtin").live_grep() end, desc = "Grep for string" },
-    },
-
     config = function()
-      local telescope = require("telescope")
-
-      telescope.setup({
-        extensions = {
-          fzf = {
-            fuzzy = true,
-            override_generic_sorter = true,
-            override_file_sorter = true,
-            case_mode = "smart_case",
-          },
+      require('telescope').setup {
+        pickers = {
+          find_files = {
+            theme = "ivy"
+          }
         },
-      })
+        extensions = {
+          fzf = {}
+        }
+      }
 
-      telescope.load_extension("fzf")
-    end,
-  },
+      require('telescope').load_extension('fzf')
+
+      vim.keymap.set("n", "<space>fh", require('telescope.builtin').help_tags)
+      vim.keymap.set("n", "<space>fd", require('telescope.builtin').find_files)
+      vim.keymap.set("n", "<space>en", function()
+        require('telescope.builtin').find_files {
+          cwd = vim.fn.stdpath("config")
+        }
+      end)
+      vim.keymap.set("n", "<space>ep", function()
+        require('telescope.builtin').find_files {
+          cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy")
+        }
+      end)
+
+    end
+  }
 }
-
